@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask RPG</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #222; color: white; }
+        .box { border: 2px solid #444; padding: 20px; width: 300px; margin: 0 auto; border-radius: 10px; }
+        .btn { background: #e74c3c; color: white; padding: 10px; text-decoration: none; display: inline-block; margin-top: 10px; }
+        .status { color: #2ecc71; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>⚔️ Flask Quest ⚔️</h1>
+
+    {% if not player %}
+        <div class="box">
+            <form action="/novo_jogo" method="post">
+                <input type="text" name="nome" placeholder="Nome do Herói" required>
+                <button type="submit">Começar Jornada</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="box">
+            <h3>Herói: {{ player.nome }}</h3>
+            <p>Vida: <span style="color: red;">{{ player.hp }}</span></p>
+            <p>Ouro: <span style="color: gold;">{{ player.ouro }}</span></p>
+            <hr>
+            <p><i>{{ session.get('log', 'Você está na entrada da masmorra...') }}</i></p>
+            
+            {% if player.hp > 0 %}
+                <a href="/explorar" class="btn">Explorar Masmorra</a>
+            {% else %}
+                <h2 style="color: red;">VOCÊ MORREU!</h2>
+                <a href="/reset" class="btn">Tentar Novamente</a>
+            {% endif %}
+        </div>
+        <br>
+        <a href="/reset" style="color: #888;">Abandonar Personagem</a>
+    {% endif %}
+</body>
+</html>
